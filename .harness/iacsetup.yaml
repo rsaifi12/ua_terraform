@@ -15,10 +15,10 @@ pipeline:
           service:
             serviceRef: iac_service
           environment:
-            environmentRef: iac_env
+            environmentRef: terraformbase
             deployToAll: false
             infrastructureDefinitions:
-              - identifier: iac_new
+              - identifier: runterra
           execution:
             steps:
               - step:
