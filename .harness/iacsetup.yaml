@@ -52,7 +52,9 @@ pipeline:
         tags: {}
         failureStrategies:
           - onFailure:
-              errors: []
+              errors:
+                - Authentication
+                - Connectivity
               action:
                 type: Ignore
         when:
