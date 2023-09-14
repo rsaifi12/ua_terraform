@@ -53,10 +53,9 @@ pipeline:
         failureStrategies:
           - onFailure:
               errors:
-                - Authentication
-                - Connectivity
+                - AllErrors
               action:
-                type: Ignore
+                type: PipelineRollback
         when:
           pipelineStatus: All
   properties:
