@@ -22,6 +22,25 @@ pipeline:
           execution:
             steps:
               - step:
+                  type: ShellScriptProvision
+                  name: ShellScriptProvision_1
+                  identifier: ShellScriptProvision_1
+                  spec:
+                    source:
+                      type: Inline
+                      spec:
+                        script: |-
+                          # initialize terraform
+                          terraform init
+
+                          # # apply terraform
+                          terraform apply -auto-approve
+
+                          # destroy terraform
+                          # terraform destroy -auto-approve
+                    environmentVariables: []
+                  timeout: 10m
+              - step:
                   type: TerraformApply
                   name: TerraformApply_1
                   identifier: TerraformApply_1
