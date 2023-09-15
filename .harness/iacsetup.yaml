@@ -22,32 +22,31 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: TerraformApply
-                  name: Terraform Apply
-                  identifier: TerraformApply_1
+                  type: ShellScriptProvision
+                  name: ShellScriptProvision_1
+                  identifier: ShellScriptProvision_1
                   spec:
-                    provisionerIdentifier: aws
-                    configuration:
+                    source:
                       type: Inline
                       spec:
-                        configFiles:
-                          store:
-                            spec:
-                              connectorRef: awsconnector
-                              bucketName: harnessbucket12
-                              region: us-east-1
-                              folderPath: hanrssf/
-                            type: S3
+                        script: |-
+                          # Clone the Terraform repository
+                          git clone https://github.com/your_username/your_terraform_repo.git
+                          cd your_terraform_repo
+
+                          # Initialize Terraform (only run once)
+                          terraform init
+
+                          # Navigate to the directory where your Terraform configurations are stored
+                          cd /path/to/your/terraform/config
+
+                          # Create an execution plan
+                          terraform plan -out=tfplan
+
+                          # Apply the execution plan (with auto-approval)
+                          terraform apply -auto-approve tfplan
+                    environmentVariables: []
                   timeout: 10m
-                  when:
-                    stageStatus: Success
-                  failureStrategies:
-                    - onFailure:
-                        errors:
-                          - Authentication
-                          - Connectivity
-                        action:
-                          type: Ignore
             rollbackSteps: []
         tags: {}
         failureStrategies:
