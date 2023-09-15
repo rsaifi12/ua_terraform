@@ -19,7 +19,6 @@ pipeline:
             deployToAll: false
             infrastructureDefinitions:
               - identifier: nedef
-                source: S3
           execution:
             steps:
               - step:
