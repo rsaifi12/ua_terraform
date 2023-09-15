@@ -18,39 +18,18 @@ pipeline:
             environmentRef: terraformbase
             deployToAll: false
             infrastructureDefinitions:
-              - identifier: runterra
+              - identifier: nedef
+                source: S3
           execution:
             steps:
               - step:
-                  type: ShellScriptProvision
-                  name: ShellScriptProvision_1
-                  identifier: ShellScriptProvision_1
-                  spec:
-                    source:
-                      type: Inline
-                      spec:
-                        script: |-
-                          # initialize terraform
-                          terraform init
-
-                          # # apply terraform
-                          terraform apply -auto-approve
-
-                          # destroy terraform
-                          # terraform destroy -auto-approve
-                    environmentVariables: []
-                  timeout: 10m
-              - step:
                   type: TerraformApply
-                  name: TerraformApply_1
+                  name: Terraform Apply
                   identifier: TerraformApply_1
                   spec:
                     provisionerIdentifier: aws
                     configuration:
                       type: Inline
-                      commandFlags:
-                        - commandType: APPLY
-                          flag: ""
                       spec:
                         configFiles:
                           store:
