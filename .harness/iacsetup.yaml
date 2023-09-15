@@ -48,6 +48,9 @@ pipeline:
                     provisionerIdentifier: aws
                     configuration:
                       type: Inline
+                      commandFlags:
+                        - commandType: APPLY
+                          flag: ""
                       spec:
                         configFiles:
                           store:
