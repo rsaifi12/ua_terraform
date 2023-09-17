@@ -30,15 +30,32 @@ pipeline:
                       type: Inline
                       spec:
                         script: |-
+                          #!/bin/bash
+
+                          # fail on any error
+                          set -eu
+
+                          # install yum-config-manager to manage your repositories
+                          sudo yum install -y yum-utils
+
+                          # use yum-config-manager to add the official HashiCorp Linux repository
+                          sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+
+                          # install terraform
+                          sudo yum -y install terraform
+
+                          # verify terraform is installed
+                          terraform --version
+
                           # Clone the Terraform repository
-                          git clone https://github.com/your_username/your_terraform_repo.git
-                          cd your_terraform_repo
+                          https://github.com/rsaifi12/ua_terraform.git
+                          cd ua_terraform
 
                           # Initialize Terraform (only run once)
                           terraform init
 
                           # Navigate to the directory where your Terraform configurations are stored
-                          cd /path/to/your/terraform/config
+                          #cd /path/to/your/terraform/config
 
                           # Create an execution plan
                           terraform plan -out=tfplan
