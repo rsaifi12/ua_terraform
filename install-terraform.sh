@@ -1,7 +1,3 @@
-
-
-
-This is original 
 #!/bin/bash
 
 # fail on any error
