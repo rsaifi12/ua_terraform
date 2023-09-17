@@ -29,39 +29,32 @@ pipeline:
                     source:
                       type: Inline
                       spec:
-                        script: |-
-                          #!/bin/bash
+                        script: |
+                          # Install chocolatey for package management
+                          RUN powershell -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
 
-                          # fail on any error
-                          set -eu
+                          # Install terraform using chocolatey
+                          RUN choco install -y terraform
 
-                          # install yum-config-manager to manage your repositories
-                          sudo yum install -y yum-utils
-
-                          # use yum-config-manager to add the official HashiCorp Linux repository
-                          sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-
-                          # install terraform
-                          sudo yum -y install terraform
-
-                          # verify terraform is installed
-                          terraform --version
+                          # Verify terraform is installed
+                          RUN terraform --version
 
                           # Clone the Terraform repository
-                          https://github.com/rsaifi12/ua_terraform.git
-                          cd ua_terraform
+                          RUN git clone https://github.com/rsaifi12/ua_terraform.git
+                          WORKDIR ua_terraform
 
                           # Initialize Terraform (only run once)
-                          terraform init
+                          RUN terraform init
 
                           # Navigate to the directory where your Terraform configurations are stored
-                          #cd /path/to/your/terraform/config
+                          # For Windows, replace the path with the appropriate Windows path
+                          # e.g., cd C:\path\to\your\terraform\config
 
                           # Create an execution plan
-                          terraform plan -out=tfplan
+                          RUN terraform plan -out=tfplan
 
                           # Apply the execution plan (with auto-approval)
-                          terraform apply -auto-approve tfplan
+                          RUN terraform apply -auto-approve tfplan
                     environmentVariables: []
                   timeout: 10m
             rollbackSteps: []
