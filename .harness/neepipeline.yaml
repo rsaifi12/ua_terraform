@@ -1,0 +1,49 @@
+pipeline:
+  name: neepipeline
+  identifier: neepipeline
+  projectIdentifier: Terraformsetup
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: buildterra
+        identifier: buildterra
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Ssh
+          service:
+            serviceRef: Iac
+          environment:
+            environmentRef: iac_env
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: iac_new
+          execution:
+            steps:
+              - step:
+                  type: TerraformPlan
+                  name: TerraformPlan_1
+                  identifier: TerraformPlan_1
+                  spec:
+                    provisionerIdentifier: tfplan
+                    configuration:
+                      command: Apply
+                      configFiles:
+                        store:
+                          spec:
+                            connectorRef: awsconnector
+                            bucketName: harnessbucket12
+                            region: us-east-1
+                            folderPath: hanrssf/
+                          type: S3
+                      secretManagerRef: harnessSecretManager
+                  timeout: 10m
+            rollbackSteps: []
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
